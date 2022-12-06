@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 
@@ -19,6 +20,7 @@ public class Pizza {
 	
 	@Column(unique = true)
 	@NotNull(message = "Name field cannot be null")
+	@NotEmpty(message = "Name field cannot be empty")
 	private String name;
 	
 	@Column
@@ -61,6 +63,12 @@ public class Pizza {
 	}
 	public void setPrice(int price) {
 		this.price = price;
+	}
+	
+	public String formattedPrice() {
+		float formattedPrice = getPrice() / 100;
+		String convertedPrice = String.valueOf(formattedPrice) + "0€";
+		return convertedPrice.replace(".", ",");
 	}
 	
 	@Override
