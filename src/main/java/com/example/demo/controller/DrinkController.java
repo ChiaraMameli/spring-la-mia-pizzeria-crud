@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.pojo.Drink;
@@ -83,6 +85,19 @@ public class DrinkController {
 	public String deleteDrink(@PathVariable("id") int id) {
 		drinkService.delete(id);
 		return "redirect:/";
+	}
+	
+	@GetMapping("/search")
+	public String searchDrinkByName(Model model, @RequestParam(name = "q", required = false) String query) {
+		
+		List<Drink> drinks = query == null 
+							? drinkService.findAll()
+							: drinkService.findByName(query); 
+		
+		model.addAttribute("drinks", drinks);
+		model.addAttribute("query", query);
+		
+		return "drink-search";
 	}
 		
 }

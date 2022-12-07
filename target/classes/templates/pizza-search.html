@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.1.3/css/bootstrap.min.css}"/>
+    <script src="https://kit.fontawesome.com/3395c408c6.js" crossorigin="anonymous"></script>
+    <title>Search Pizza</title>
+</head>
+<body>
+    <nav class="navbar bg-light">
+        <div class="container">
+            <a class="navbar-brand">Pizzas</a>
+            <form class="d-flex" role="search">
+                <input class="form-control me-2" type="search" placeholder="Search" name="q" th:value="${query}">
+                <button class="btn btn-outline-success" type="submit" value="SEARCH">Search</button>
+            </form>
+        </div>
+    </nav>
+	<div class="container">
+        <table th:if="${!pizza.isEmpty()}" class="table table-hover">
+            <table class="table">
+                <thead>
+                    <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="pizza : ${pizza}" th:object="${pizza}">
+                    <td th:text="*{name}"></td>
+                    <td th:text="*{description}"></td>
+                    <td th:text="*{formattedPrice()}"></td>
+                    <td>
+                        <a th:href="@{/pizza/{id} (id=*{id})}" type="button" class="btn btn-success btn-small">
+                            <i class="fa-solid fa-eye"></i>
+                        </a>
+                        <a th:href="@{/pizza/update/{id} (id=*{id})}" type="button" class="btn btn-warning btn-small">
+                            <i class="fa-solid fa-pencil"></i>
+                        </a>
+                        
+                        <a th:href="@{/pizza/delete/{id} (id=*{id})}" type="button" class="btn btn-danger btn-small">
+                            <i class="fa-solid fa-trash"></i>
+                        </a>
+                    </td>
+                    </tr>
+                </tbody>
+                </table>
+        </table>
+
+        <h3 th:if="${pizza.isEmpty()}" class="text-center pt-3">There are no pizzas at the moment</h3>
+        <div><a href="/" class="btn btn-secondary">Back</a></div>
+	</div>
+</body>
+</html>
